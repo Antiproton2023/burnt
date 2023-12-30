@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% block content %}
+<h2>{{s.name}}</h2>
+<h5>{{s.host}}</h5>
+<a href="{% url 'ServerMainPage' s.password %}">Go Back</a><br><br>
+<div style="display: grid;grid-template-columns: 1fr 2fr;">
+    <div style = 'padding: 2%; overflow-y: scroll;'>
+        <h5>Add a member</h5>
+        <form action="" method = 'GET'>
+            {% csrf_token %}
+            <input type="text" name="SearchUser" placeholder="Search for an User">
+            <input type="submit" placeholder="Search"><br><br>
+        </form>
+        {% for r in users %}
+            <form action = '' method = 'POST'>
+                {% csrf_token %}
+                {{r.username}}
+                <input type="hidden" name = 'myaction' value='add'>
+                <input type="hidden" name="username" value = '{{r.username}}'>
+                <input type="submit" value=" Add">
+            </form>        
+        {% endfor %}
+    </div>
+    <div style = 'padding: 2%;'>
+        <h5>Remove a member</h5>
+        {% for m in members %}
+            {{m.member}}
+            {% if m.member == s.host %}<small>-Host</small><br>{% endif %}
+            {% if m.member != s.host %}
+            <form action = '' method = 'POST'>
+                {% csrf_token %}
+                <input type="hidden" name = 'myaction' value='remove'>
+                <input type="hidden" name="username" value = '{{m.member.username}}'>
+                <input type="submit" value=" Remove">
+            </form>
+            {% endif %}
+            <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

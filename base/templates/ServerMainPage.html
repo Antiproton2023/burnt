@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% block content %}
+<div>
+    <h2>{{s.name}}</h2>
+    <h5>{{s.host}}</h5><br><br>
+    <div style="display: grid; grid-template-columns: 2fr 3fr;">
+    <div style="overflow-y: scroll; padding: 2%;">
+        <h4>Members</h4>
+        {% for m in members %}
+            <small>{{m.member}}</small>
+            {% if m.member == s.host %}<small>-Host</small>{% endif %}<br>
+        {% endfor %}<br><br>
+        {% if request.user == s.host %}<a href = '{% url "ManageMembers" s.password %}'>Manage members</a>{% endif %}
+    </div>
+    <div style="overflow-y: scroll; padding: 2%;">
+        <h4>Rooms</h4>
+        {% if request.user == s.host %}
+            <a href="{% url 'createroom' s.password %}">Create a Room</a>
+        {% endif %}<br>
+        {% if rooms == False %}<h7>No rooms exist</h7>{% endif %}
+        {% for room in rooms %}
+            <hr>
+            <div>
+                <h5>{{room.name}}</h5>
+                <a href="{% url 'room' room.password %}" style="align-items: end;">Enter</a>
+                {% if request.user == s.host %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name = 'roomname' value = '{{room.name}}'>
+                        <input type="submit" value="Delete">
+                    </form>
+                {% endif %}
+            </div>
+            <hr>
+            {% endfor %}
+    </div>
+    </div>
+</div>
+{% endblock content %}

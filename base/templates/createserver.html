@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+{% block content %}
+<div>
+    <form action="" method = 'POST'>
+        {% csrf_token %}
+        <input type="text" name="servername" id="" placeholder = 'Server name...' maxlength="50"><br><br>
+        <label>Maximum length is 50 characters</label><br><br>
+        <input type="submit" value="Create Server">
+    </form>
+</div>
+{% endblock content %}

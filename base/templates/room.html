@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class = 'container container-fluid border border-primary '>
+    <div class="row p-1">
+        <h5>{{room.name}} ({{room.server.name}})</h5>
+        <a href="{% url 'ServerMainPage' room.server.password %}">Return to server</a>
+
+    </div>
+    <hr>
+    <div class="row p-2 mh-50">
+        {% for amsg in mymessages %}
+            {% if amsg.user == request.user %}
+            <div class="">
+                <div class="float-start card bg-primary bg-primary-gradient " style="max-width:20rem" >
+                    <div class="card-body">
+                      <h6 class="card-title ">{{amsg.user}} -{{amsg.created|timesince}} ago</h6>
+                      <p class="card-text">
+                          {{amsg.msg}}
+                      </p>
+                      <form action="" method = "POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="myaction" value = "dmsg">
+                        <input type="hidden" name="msgbody" value="{{amsg.msg}}">
+                        <input type="hidden" name = "uniqueid" value = {{amsg.uniqueid}}>
+                        <input type="submit" value="Delete message" class = 'btn btn-danger'>
+                      </form>
+                    </div>
+                  </div>
+              </div>
+            {% endif %}
+            {% if amsg.user != request.user %}
+            <div class="">
+                <div class="float-end card bg-warning bg-warning-gradient " style="max-width:20rem" >
+                    <div class="card-body">
+                      <h6 class="card-title ">{{amsg.user}} -{{amsg.created|timesince}} ago</h6>
+                      <p class="card-text">
+                          {{amsg.msg}}
+                      </p>
+              
+                    </div>
+                  </div>
+              </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="row ">
+        <div class="col ">
+            <form method = 'POST'>
+                {% csrf_token %}
+                <div style = 'display: flex; flex-wrap: wrap;padding: 2%;'>
+                    <input type = 'hidden' name = 'myaction' value = 'admsg'>
+                    <input class = 'form-control w-75' type="text" maxlength="1000" placeholder = 'Type your message...' name = 'msg'>
+                    <input class = 'btn btn-primary w-15' type="Submit" value=">>" >
+                </div>                
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

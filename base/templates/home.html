@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% block content %}
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+
+    }
+</style>
+<div class="home-container">
+    <div>
+        <a href="{% url 'createserver' %}">Create Server</a>
+    </div>
+    <div>
+        {% for m in partof %}
+            <hr>
+            <h2>{{m.server.name}}</h2>
+            <small>Host - {{m.server.host}}</small>
+            <a href="{% url 'ServerMainPage' m.server.password %}">Enter Server</a>
+            {% if request.user == m.server.host %}
+                <a href="{% url 'deleteServer' m.server.password %}">Delete Server</a>
+            {% endif %}
+            <hr>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

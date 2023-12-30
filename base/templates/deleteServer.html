@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+{% block content %}
+<form action="" method = 'POST'>
+    {% csrf_token %}
+    <div>
+        <p>Are you sure you want to delete server - '{{s.name}}' ? Please note that deleting this server is permanent and irreversible. </p>
+        <a href="{% url 'home' %}">No, return to home</a><br><br>
+        <input type="submit" value="Yes, I understand that deleting this is permanent and irreversible and I want to delete it.">
+    </div>
+</form>
+{% endblock content %}
